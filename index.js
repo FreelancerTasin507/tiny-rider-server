@@ -36,6 +36,7 @@ async function run() {
       const result = await toyCollection.find().toArray();
       res.send(result);
     });
+    // this is id 
 
     app.get("/allToys/:id", async (req, res) => {
       const id = req.params.id;
