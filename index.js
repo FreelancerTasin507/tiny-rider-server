@@ -36,7 +36,28 @@ async function run() {
       const result = await toyCollection.find().toArray();
       res.send(result);
     });
-    // this is id 
+    // this is id
+
+    app.get("/allToys/:email", async (req, res) => {
+      console.log(req.query.email);
+      let query = {};
+      if (req.query.email) {
+        query = { email: req.query.email };
+      }
+      const cursor = toyCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/getEmail", async (req, res) => {
+      let query = {};
+      if (req.query?.email) {
+        query = { sellerEmail: req.query.email };
+      }
+
+      const result = await toyCollection.find(query).toArray();
+      res.send(result);
+    });
 
     app.get("/allToys/:id", async (req, res) => {
       const id = req.params.id;
