@@ -36,9 +36,8 @@ async function run() {
       const result = await toyCollection.find().toArray();
       res.send(result);
     });
-    // this is id
 
-    app.get("/allToys/:email", async (req, res) => {
+    app.get("/singleEmail/:email", async (req, res) => {
       console.log(req.query.email);
       let query = {};
       if (req.query.email) {
@@ -70,6 +69,37 @@ async function run() {
       const newToy = req.body;
       console.log(newToy);
       const result = await toyCollection.insertOne(newToy);
+      res.send(result);
+    });
+
+    app.put("/allToys/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedToy = req.body;
+
+      const toy = {
+        $set: {
+          photo: updatedToy.photo,
+          name: updatedToy.name,
+          sellerName: updatedToy.sellerName,
+          email: updatedToy.email,
+          category: updatedToy.category,
+          price: updatedToy.price,
+          rating: updatedToy.rating,
+          quantity: updatedToy.quantity,
+          description: updatedToy.description,
+        },
+      };
+
+      const result = await toyCollection.updateOne(filter, toy, options);
+      res.send(result);
+    });
+
+    app.delete("/allToys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.deleteOne(query);
       res.send(result);
     });
 
