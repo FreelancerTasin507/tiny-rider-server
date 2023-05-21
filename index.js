@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const categoryCollections = client
       .db("toy-categories")
@@ -33,7 +33,7 @@ async function run() {
     const toyCollection = client.db("toyCollection").collection("Toys");
 
     app.get("/allToys", async (req, res) => {
-      const result = await toyCollection.find().limit(20).toArray();
+      const result = await toyCollection.find({}).limit(20).toArray();
       res.send(result);
     });
 
@@ -103,25 +103,25 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/allToys", async (req, res) => {
-      // const sort = req.query.sort;
-      const search = req.query.search;
-      console.log(search);
-      // const query = {};
-      // const query = { price: {$gte: 50, $lte:150}};
-      // db.InspirationalWomen.find({first_name: { $regex: /Harriet/i} })
-      const query = { title: { $regex: search, $options: "i" } };
-      const options = {
-        // sort matched documents in descending order by rating
-        sort: {
-          price: sort === "asc" ? 1 : -1,
-        },
-      };
-      const cursor = toyCollection.find(query, options);
-      const result = await cursor.toArray();
-      console.log(result);
-      res.send(result);
-    });
+    // app.get("/allToys", async (req, res) => {
+    //   // const sort = req.query.sort;
+    //   const search = req.query.search;
+    //   console.log(search);
+    //   // const query = {};
+    //   // const query = { price: {$gte: 50, $lte:150}};
+    //   // db.InspirationalWomen.find({first_name: { $regex: /Harriet/i} })
+    //   const query = { title: { $regex: search, $options: "i" } };
+    //   const options = {
+    //     // sort matched documents in descending order by rating
+    //     sort: {
+    //       price: sort === "asc" ? 1 : -1,
+    //     },
+    //   };
+    //   const cursor = toyCollection.find(query, options);
+    //   const result = await cursor.toArray();
+    //   console.log(result);
+    //   res.send(result);
+    // });
 
     app.get("/categories", async (req, res) => {
       const cursor = categoryCollections.find();
